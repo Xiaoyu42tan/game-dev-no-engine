@@ -29,9 +29,14 @@ endif()
 # add include directories here. the compiler will search these directories for the headers
 include_directories(include)
 
-# add source files here
-file(GLOB SOURCES "src/*.cpp")
-add_executable(main ${SOURCES})
+############## ADD SOURCE FILES HERE ##############
+add_executable(main 
+    "src/main.cpp"
+    "src/Engine.cpp"
+    "src/World.cpp"
+    "src/Particle.cpp"
+    "src/ParticleGrid.cpp"
+)
 
 # Link to SFML
 target_link_libraries(main PRIVATE

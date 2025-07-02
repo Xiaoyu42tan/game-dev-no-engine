@@ -28,6 +28,19 @@ This generates a `.bat` file in the root folder which will run the game.
 
 NOTE: The `main` executable is in `/build` which was generated above. I wrapped `main` in the `.bat` file to make sure the DLLs are accessible in the PATH. Let me know if there is a cleaner way to do this.
 
+### 2.1. Adding/removing a source file
+Make sure you are adding the file in the `/src` directory. Then edit `CMakeLists.txt` in the root directory to include the new source file you added.
+
+The relevant section in the `CMakeLists.txt` should look something like this
+
+```cmake
+############## ADD SOURCE FILES HERE ##############
+add_executable(main 
+    "src/main.cpp"
+    ...
+)
+```
+
 ### 3. Running the game
 Run:
 ```cmd
