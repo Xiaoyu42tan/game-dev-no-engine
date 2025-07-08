@@ -14,6 +14,7 @@ public:
 
 private:
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
+    void onMousePressed(const sf::Event::MouseButtonPressed& mousePressed);
 
     sf::RenderWindow window;
     sf::View view;

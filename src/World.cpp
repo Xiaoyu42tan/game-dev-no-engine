@@ -17,6 +17,12 @@ void World::testCreateBorder() {
     }
 }
 
+void World::SetPositionMaterial(unsigned int x, unsigned int y, Material material) {
+    if(x > dimensions.x || y > dimensions.y)
+        return;
+    particleGrid.set(x, y, material);
+}
+
 World::World(const sf::Vector2u& dimensions) 
     : dimensions(dimensions)
     , particleGrid(dimensions)
@@ -26,7 +32,7 @@ World::World(const sf::Vector2u& dimensions)
     bool success = gridTexture.loadFromImage(gridImage);
     gridSprite = sf::Sprite(gridTexture); // sprite to draw
 
-    testFunction(); // DEBUG
+    // testFunction(); // DEBUG
 
     gridTexture.update(gridImage);
 

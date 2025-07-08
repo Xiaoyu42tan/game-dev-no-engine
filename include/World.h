@@ -15,6 +15,9 @@ public:
     void step();
 
     inline sf::Sprite getGridSprite() const { return gridSprite; }
+    void SetPositionMaterial(unsigned int x, unsigned int y, Material material);
+    sf::Vector2u getWorldDimensions() { return dimensions; }
+
 private:
     inline bool inBounds(unsigned int x, unsigned int y) const { return x < dimensions.x && y < dimensions.y; };
 

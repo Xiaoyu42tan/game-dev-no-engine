@@ -32,9 +32,15 @@ void Engine::run() {
             if (keyPressed != nullptr) {
                 onKeyPressed(*keyPressed);
             }
+
+            const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>();
+            if (mousePressed != nullptr) {
+                onMousePressed(*mousePressed);
+            }
+
         }
         // process a simulation step
-        // world.step();
+        world.step();
 
         // Clear screen
         window.clear();
@@ -47,6 +53,19 @@ void Engine::run() {
     }
     
     std::cout << "Program successfully quit!\n";
+}
+
+void Engine::onMousePressed(const sf::Event::MouseButtonPressed& mousePressed) {
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition, view);
+    int wx = static_cast<int>(worldPosition.x);
+    int wy = static_cast<int>(worldPosition.y);
+
+    switch (mousePressed.button) {
+        case sf::Mouse::Button::Left:
+        world.SetPositionMaterial(wx, wy, Material::SAND_SOURCE);
+        break;
+    }
 }
 
 void Engine::onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
@@ -63,25 +82,28 @@ void Engine::onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
         break;
         // WASD camera movement
         case sf::Keyboard::Key::W:
-        view.move({0, -3});
-        window.setView(view);
-        break;
-        case sf::Keyboard::Key::A:
-        view.move({-3, 0});
-        window.setView(view);
-        break;
-        case sf::Keyboard::Key::S:
         view.move({0, 3});
         window.setView(view);
         break;
-        case sf::Keyboard::Key::D:
+        case sf::Keyboard::Key::A:
         view.move({3, 0});
+        window.setView(view);
+        break;
+        case sf::Keyboard::Key::S:
+        view.move({0, -3});
+        window.setView(view);
+        break;
+        case sf::Keyboard::Key::D:
+        view.move({-3, 0});
         window.setView(view);
         break;
         // debug step
         case sf::Keyboard::Key::K:
         world.step();
         break;
+
+
+
     }
 }
 
