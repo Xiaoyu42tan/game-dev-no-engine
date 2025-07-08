@@ -11,6 +11,7 @@ enum class Material {
     DEBUG_HIGHLIGHT,
     SAND_SOURCE,
     STONE,
+    WATER,
 };
 
 struct Particle {

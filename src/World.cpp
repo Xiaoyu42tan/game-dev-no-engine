@@ -68,6 +68,9 @@ void World::step() {
                 case Material::SAND_SOURCE:
                     stepSandSource(x, y);
                     break;
+                case Material::WATER:
+                    stepWater(x, y);
+                    break;
             }
         }
     }
@@ -90,6 +93,38 @@ void World::stepSand(unsigned int x, unsigned int y) {
     else if (inBounds(x + 1, y + 1) && particleGrid.get(x + 1, y + 1).material == Material::NONE) {
         particleGrid.set(x, y, Material::NONE);
         particleGrid.set(x + 1, y + 1, Material::SAND);
+    }
+}
+
+void World::stepWater(unsigned int x, unsigned int y) {
+    float rng = static_cast<float>(rand())/RAND_MAX;
+
+    // down
+    if (inBounds(x, y + 1) && particleGrid.get(x, y + 1).material == Material::NONE) {
+        particleGrid.set(x, y, Material::NONE);
+        particleGrid.set(x, y + 1, Material::WATER);
+    } else if(rng > 0.5) {
+        // left
+        if (inBounds(x - 1, y) && particleGrid.get(x - 1, y).material == Material::NONE) {
+            particleGrid.set(x, y, Material::NONE);
+            particleGrid.set(x - 1, y, Material::WATER);
+        }
+        //right
+        else if (inBounds(x + 1, y) && particleGrid.get(x + 1, y).material == Material::NONE) {
+            particleGrid.set(x, y, Material::NONE);
+            particleGrid.set(x + 1, y, Material::WATER);
+        }
+    } else {
+        //right
+        if (inBounds(x + 1, y) && particleGrid.get(x + 1, y).material == Material::NONE) {
+            particleGrid.set(x, y, Material::NONE);
+            particleGrid.set(x + 1, y, Material::WATER);
+        }
+        // left
+        else if (inBounds(x - 1, y) && particleGrid.get(x - 1, y).material == Material::NONE) {
+            particleGrid.set(x, y, Material::NONE);
+            particleGrid.set(x - 1, y, Material::WATER);
+        }
     }
 }
 

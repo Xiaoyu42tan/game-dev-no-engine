@@ -31,6 +31,7 @@ private:
     // Simulation rules per Particle material.
     void stepSand(unsigned int x, unsigned int y);
     void stepSandSource(unsigned int x, unsigned int y);
+    void stepWater(unsigned int x, unsigned int y);
 
     // rendering stuff
     sf::Texture gridTexture;

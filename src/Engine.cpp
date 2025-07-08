@@ -44,12 +44,11 @@ void Engine::run() {
             if (mouseReleased) {
                 buttonHeld = {};
             }
-
-            if (buttonHeld.has_value()) {
-                onMouseButton(*buttonHeld);
-            }
-
         }
+        if (buttonHeld.has_value()) {
+            onMouseButton(*buttonHeld);
+        }
+
         // process a simulation step
         world.step();
 
@@ -126,6 +125,10 @@ void Engine::onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
         case sf::Keyboard::Key::Num2:
         selectedMaterial = Material::STONE;
         std::cout << "stone selected, press mouse L button to use " << std::endl;
+        break;
+        case sf::Keyboard::Key::Num3:
+        selectedMaterial = Material::WATER;
+        std::cout << "water selected, press mouse L button to use " << std::endl;
         break;
     }
 }

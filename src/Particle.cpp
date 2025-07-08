@@ -7,6 +7,7 @@ sf::Color getMaterialColor(Material material) {
         case Material::SAND_SOURCE: return sf::Color(255, 255, 255);
         case Material::DEBUG_HIGHLIGHT: return sf::Color(0, 255, 0);
         case Material::STONE: return sf::Color(80, 80, 80);
+        case Material::WATER: return sf::Color(100, 100, 200);
         default: return sf::Color::Magenta;
     }
 }
