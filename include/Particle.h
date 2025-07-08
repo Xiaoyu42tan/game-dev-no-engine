@@ -9,7 +9,8 @@ enum class Material {
     SAND,
     DEBUG_BORDER,
     DEBUG_HIGHLIGHT,
-    SAND_SOURCE
+    SAND_SOURCE,
+    STONE,
 };
 
 struct Particle {

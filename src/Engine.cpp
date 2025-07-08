@@ -10,6 +10,7 @@ Engine::Engine(const sf::Vector2u& windowResolution, const std::string& windowNa
     : window(sf::VideoMode(windowResolution), windowName)
     , world({WORLDSIZE, WORLDSIZE})
     , view(DEFAULT_VIEW_CENTRE, DEFAULT_VIEW_SIZE)
+    , selectedMaterial(Material::SAND_SOURCE)
 {
     window.setFramerateLimit(60);
 }
@@ -18,6 +19,7 @@ void Engine::run() {
 
     window.setView(view);
 
+    std::optional<sf::Mouse::Button> buttonHeld;
     // main game loop
     while (window.isOpen()) {
         // Process event queue
@@ -35,7 +37,16 @@ void Engine::run() {
 
             const auto* mousePressed = event->getIf<sf::Event::MouseButtonPressed>();
             if (mousePressed != nullptr) {
-                onMousePressed(*mousePressed);
+                buttonHeld = { mousePressed->button };
+            }
+
+            const auto* mouseReleased = event->getIf<sf::Event::MouseButtonReleased>();
+            if (mouseReleased) {
+                buttonHeld = {};
+            }
+
+            if (buttonHeld.has_value()) {
+                onMouseButton(*buttonHeld);
             }
 
         }
@@ -55,15 +66,15 @@ void Engine::run() {
     std::cout << "Program successfully quit!\n";
 }
 
-void Engine::onMousePressed(const sf::Event::MouseButtonPressed& mousePressed) {
+void Engine::onMouseButton(const sf::Mouse::Button& buttonHeld) {
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
     sf::Vector2f worldPosition = window.mapPixelToCoords(mousePosition, view);
     int wx = static_cast<int>(worldPosition.x);
     int wy = static_cast<int>(worldPosition.y);
 
-    switch (mousePressed.button) {
+    switch (buttonHeld) {
         case sf::Mouse::Button::Left:
-        world.SetPositionMaterial(wx, wy, Material::SAND_SOURCE);
+        world.SetPositionMaterial(wx, wy, selectedMaterial);
         break;
     }
 }
@@ -82,19 +93,19 @@ void Engine::onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
         break;
         // WASD camera movement
         case sf::Keyboard::Key::W:
-        view.move({0, 3});
-        window.setView(view);
-        break;
-        case sf::Keyboard::Key::A:
-        view.move({3, 0});
-        window.setView(view);
-        break;
-        case sf::Keyboard::Key::S:
         view.move({0, -3});
         window.setView(view);
         break;
-        case sf::Keyboard::Key::D:
+        case sf::Keyboard::Key::A:
         view.move({-3, 0});
+        window.setView(view);
+        break;
+        case sf::Keyboard::Key::S:
+        view.move({0, 3});
+        window.setView(view);
+        break;
+        case sf::Keyboard::Key::D:
+        view.move({3, 0});
         window.setView(view);
         break;
         // debug step
@@ -103,7 +114,19 @@ void Engine::onKeyPressed(const sf::Event::KeyPressed& keyPressed) {
         break;
 
 
-
+        // material options
+        case sf::Keyboard::Key::Num0:
+        selectedMaterial = Material::NONE;
+        std::cout << "eraser selected, press mouse L button to use " << std::endl;
+        break;
+        case sf::Keyboard::Key::Num1:
+        selectedMaterial = Material::SAND_SOURCE;
+        std::cout << "sand source selected, press mouse L button to use " << std::endl;
+        break;
+        case sf::Keyboard::Key::Num2:
+        selectedMaterial = Material::STONE;
+        std::cout << "stone selected, press mouse L button to use " << std::endl;
+        break;
     }
 }
 

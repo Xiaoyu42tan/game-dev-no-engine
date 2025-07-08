@@ -14,10 +14,11 @@ public:
 
 private:
     void onKeyPressed(const sf::Event::KeyPressed& keyPressed);
-    void onMousePressed(const sf::Event::MouseButtonPressed& mousePressed);
+    void onMouseButton(const sf::Mouse::Button& buttonHeld);
 
     sf::RenderWindow window;
     sf::View view;
 
+    Material selectedMaterial;
     World world;
 };
