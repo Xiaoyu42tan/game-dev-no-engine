@@ -1,27 +1,32 @@
 #pragma once
 
-#include <vector>
-#include <SFML/Graphics.hpp>
+#include "Particles/Particle.h" // need full include in this header because ParticlePtr is a type alias
 
-#include "Particle.h"
+#include <vector>
+#include <memory>
+
+#include <SFML/Graphics/Color.hpp> // lightweight header
+#include <SFML/System/Vector2.hpp> // lightweight header
 
 class ParticleGrid {
 public:
     ParticleGrid(const sf::Vector2u& dimensions);
 
     // Get a particle
-    inline Particle get(unsigned int x, unsigned int y) const {
-        assert(x < dimensions.x && y < dimensions.y);
-        return grid[y * dimensions.x + x];
-    }
+    ParticlePtr get(const sf::Vector2i& position) const;
     
-    // Set a particle to a material. Marks it dirty. Dirty particles will not be updated again.
-    void set(unsigned int x, unsigned int y, Material material);
-
-    // Undirties the entire grid
-    void resetDirty();
+    // sets particle at {x, y}
+    void set(const sf::Vector2i& position, ParticlePtr particle);
+    
+    // swaps particle at {x1, y1} with particle at {x2, y2}
+    void swap(const sf::Vector2i& position1, const sf::Vector2i& position2);
+    
+    inline bool inBounds(const sf::Vector2i& position) const { return position.x >= 0 && position.x < dimensions.x && position.y >= 0 && position.y < dimensions.y; }
 private:
+
+    inline int getIndex(const sf::Vector2i& position) const { return position.y * dimensions.x + position.x; }
+
     // using flat vectors for contiguous memory
-    std::vector<Particle> grid;
+    std::vector<ParticlePtr> grid;
     sf::Vector2u dimensions;
 };

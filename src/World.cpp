@@ -1,27 +1,34 @@
 #include "World.h"
 
+#include "Particles/SandSource.h"
+#include "Particles/DebugSolid.h"
+#include "Particles/Element.h"
+#include "Particles/ParticleFactory.h"
+
 void World::testFunction() {
-    particleGrid.set(dimensions.x / 2, dimensions.y / 2, Material::SAND_SOURCE);
+    particleGrid.set({dimensions.x / 2, dimensions.y / 2}, factoryMakeParticle(Element::SAND_SOURCE));
 
     testCreateBorder();
 }
 
 void World::testCreateBorder() {
     for (int x = 0; x < dimensions.x; x++) {
-        particleGrid.set(x, 0, Material::DEBUG_BORDER);
-        particleGrid.set(x, dimensions.y - 1, Material::DEBUG_BORDER);
+        particleGrid.set({x, 0}, factoryMakeParticle(Element::DEBUG_SOLID));
+        particleGrid.set({x, dimensions.y - 1}, factoryMakeParticle(Element::DEBUG_SOLID));
     }
     for (int y = 0; y < dimensions.y; y++) {
-        particleGrid.set(0, y, Material::DEBUG_BORDER);
-        particleGrid.set(dimensions.x - 1, y, Material::DEBUG_BORDER);
+        particleGrid.set({0, y}, factoryMakeParticle(Element::DEBUG_SOLID));
+        particleGrid.set({dimensions.x - 1, y}, factoryMakeParticle(Element::DEBUG_SOLID));
     }
 }
 
-World::World(const sf::Vector2u& dimensions) 
+World::World(const sf::Vector2u& dimensions, sf::RenderWindow& window) 
     : dimensions(dimensions)
+    , window(window)
     , particleGrid(dimensions)
     , gridImage(dimensions)
     , gridSprite(gridTexture)
+    , brush(0)
 {
     bool success = gridTexture.loadFromImage(gridImage);
     gridSprite = sf::Sprite(gridTexture); // sprite to draw
@@ -35,61 +42,49 @@ World::World(const sf::Vector2u& dimensions)
 
 void World::render() {
     // update grid image
-    for (unsigned int x = 0; x < dimensions.x; x++)
-        for (unsigned int y = 0; y < dimensions.y; y++)
-            gridImage.setPixel({x, y}, getMaterialColor(particleGrid.get(x, y).material));
+    sf::Vector2i position = {0, 0};
+    for (position.x = 0; position.x < dimensions.x; position.x++) {
+        for (position.y = 0; position.y < dimensions.y; position.y++) {
+            gridImage.setPixel(static_cast<sf::Vector2u>(position), particleGrid.get(position)->color);
+        }
+    }
     
+    // update brush overlay
+    sf::Vector2i brushPosition = static_cast<sf::Vector2i>(getMouseWorldPosition());
+    for (const sf::Vector2i& offset : brush.getBrushMask()) {
+        if (inBounds(brushPosition + offset)) {
+            gridImage.setPixel(static_cast<sf::Vector2u>(brushPosition + offset), getElementColor(brush.getSelectedElement()));
+        }
+    }
+
     // update grid texture
     gridTexture.update(gridImage);
 
     // grid sprite automatically gets updated when the texture gets updated
 }
 
+void World::spawn(const sf::Vector2i& position, ParticlePtr particle) {
+    particleGrid.set(position, particle);
+    gridImage.setPixel(static_cast<sf::Vector2u>(position), particle->color);
+
+    // update grid texture
+    gridTexture.update(gridImage);
+}
+
 void World::step() {
-    particleGrid.resetDirty();
-
-    for (unsigned int y = 0; y < dimensions.y; y++) {
-        for (unsigned int x = 0; x < dimensions.x; x++) {
-            // do not step the particle if its dirty
-            if (particleGrid.get(x, y).isDirty) continue;
-
-            switch (particleGrid.get(x, y).material) {
-                case Material::NONE:
-                    break;
-                case Material::SAND:
-                    stepSand(x, y);
-                    break;
-                case Material::SAND_SOURCE:
-                    stepSandSource(x, y);
-                    break;
-            }
+    sf::Vector2i position = {0, dimensions.y - 1};
+    
+    for (position.y = dimensions.y - 1; position.y >= 0; position.y--) {
+        for (position.x = 0; position.x < dimensions.x; position.x++) {
+            particleGrid.get(position)->step(position, particleGrid);
         }
     }
 
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+        brush.paint(*this);
+    } else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
+        brush.paint(Element::EMPTY, *this);
+    }
+
     render();
-}
-
-void World::stepSand(unsigned int x, unsigned int y) {
-    // down
-    if (inBounds(x, y + 1) && particleGrid.get(x, y + 1).material == Material::NONE) {
-        particleGrid.set(x, y, Material::NONE);
-        particleGrid.set(x, y + 1, Material::SAND);
-    }
-    // down left
-    else if (inBounds(x - 1, y + 1) && particleGrid.get(x - 1, y + 1).material == Material::NONE) {
-        particleGrid.set(x, y, Material::NONE);
-        particleGrid.set(x - 1, y + 1, Material::SAND);
-    }
-    // down right
-    else if (inBounds(x + 1, y + 1) && particleGrid.get(x + 1, y + 1).material == Material::NONE) {
-        particleGrid.set(x, y, Material::NONE);
-        particleGrid.set(x + 1, y + 1, Material::SAND);
-    }
-}
-
-void World::stepSandSource(unsigned int x, unsigned int y) {
-    // spawn sand below if possible
-    if (inBounds(x, y + 1) && particleGrid.get(x, y + 1).material == Material::NONE) {
-        particleGrid.set(x, y + 1, Material::SAND);
-    }
 }

@@ -34,8 +34,16 @@ add_executable(main
     "src/main.cpp"
     "src/Engine.cpp"
     "src/World.cpp"
-    "src/Particle.cpp"
+    "src/Particles/Particle.cpp"
+    "src/Particles/ParticleFactory.cpp"
+    "src/Particles/DebugSolid.cpp"
+    "src/Particles/Empty.cpp"
+    "src/Particles/Sand.cpp"
+    "src/Particles/SandSource.cpp"
     "src/ParticleGrid.cpp"
+    "src/Events/EventDispatcher.cpp"
+    "src/Events/EventListener.cpp"
+    "src/Brush.cpp"
 )
 
 # Link to SFML
