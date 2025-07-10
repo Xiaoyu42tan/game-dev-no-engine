@@ -29,6 +29,14 @@ public:
     
     inline void nextElement() { selectedElement = static_cast<Element>((static_cast<int>(selectedElement) + 1) % (static_cast<int>(Element::NUM_ELEMENTS))); }
 
+    inline void prevElement() { 
+        if (static_cast<int>(selectedElement) == 0) {
+            selectedElement = static_cast<Element>(static_cast<int>(Element::NUM_ELEMENTS) - 1);
+        } else {
+            selectedElement = static_cast<Element>(static_cast<int>(selectedElement) - 1);
+        }
+    }
+
     inline unsigned int getRadius() const { return radius; }
 
     void setRadius(unsigned int newRadius);

@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <cmath>
+#include <ctime>
+#include <cstdlib>
 
 constexpr int WORLDSIZE = 101;
 
@@ -25,6 +27,8 @@ Engine::Engine(const sf::Vector2u& windowResolution, const std::string& windowNa
 {
     window.setFramerateLimit(60);
     window.setView(view);
+
+    std::srand(std::time(nullptr)); // seed global RNG
 }
 
 void Engine::run() {

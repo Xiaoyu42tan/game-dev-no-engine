@@ -31,6 +31,14 @@ void Brush::onKeyPressed(const sf::Event::KeyPressed& event) {
             setRadius(getRadius() - 1);
         }
         break;
+
+        // change selected element
+        case sf::Keyboard::Key::E:
+        nextElement();
+        break;
+        case sf::Keyboard::Key::Q:
+        prevElement();
+        break;
     }
 }
 
@@ -79,7 +87,7 @@ void Brush::setRadius(unsigned int newRadius) {
         // skip if already visited
         if (brushMask.find(position) != brushMask.end()) continue;
 
-        // only insert if within circle
+        // skip if outside radius
         if (position.x * position.x + position.y * position.y > static_cast<int>(radius * radius)) continue;
 
         brushMask.insert(position);
