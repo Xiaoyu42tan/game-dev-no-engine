@@ -9,7 +9,7 @@
 #include <memory>
 #include <stdexcept>
 
-ParticlePtr factoryMakeParticle(Element element, ParticleGrid& grid) {
+std::shared_ptr<Particle> factoryMakeParticle(Element element, ParticleGrid& grid) {
     switch (element) {
         case Element::DEBUG_SOLID:
         return std::make_shared<DebugSolid>(grid);

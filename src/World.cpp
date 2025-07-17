@@ -5,6 +5,9 @@
 #include "Particles/Element.h"
 #include "Particles/ParticleFactory.h"
 
+#include <cstdlib>
+#include <iostream>
+
 void World::testFunction() {
     particleGrid.set({dimensions.x / 2, dimensions.y / 2}, factoryMakeParticle(Element::SAND_SOURCE, particleGrid));
 
@@ -63,7 +66,7 @@ void World::render() {
     // grid sprite automatically gets updated when the texture gets updated
 }
 
-void World::spawn(const sf::Vector2i& position, ParticlePtr particle) {
+void World::spawn(const sf::Vector2i& position, std::shared_ptr<Particle> particle) {
     particleGrid.set(position, particle);
     gridImage.setPixel(static_cast<sf::Vector2u>(position), particle->color);
 
@@ -72,12 +75,23 @@ void World::spawn(const sf::Vector2i& position, ParticlePtr particle) {
 }
 
 void World::step() {
-    sf::Vector2i position = {0, dimensions.y - 1};
-
-    for (position.y = dimensions.y - 1; position.y >= 0; position.y--) {
+    // prepare all particles to be processed
+    for (sf::Vector2i position = {0, 0}; position.y < dimensions.y; position.y++) {
         for (position.x = 0; position.x < dimensions.x; position.x++) {
-            particleGrid.get(position)->step();
+            toBeProcessed.emplace_back(particleGrid.get(position));
         }
+    }
+
+    // process in random order
+    while (!toBeProcessed.empty()) {
+        int randIndex = std::rand() % toBeProcessed.size();
+        std::swap(toBeProcessed[randIndex], toBeProcessed.back());
+        
+        if (auto particle = toBeProcessed.back().lock()) {
+            particle->step();
+        }
+
+        toBeProcessed.pop_back();
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {

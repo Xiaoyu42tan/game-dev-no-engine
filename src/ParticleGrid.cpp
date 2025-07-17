@@ -17,7 +17,7 @@ ParticleGrid::ParticleGrid(const sf::Vector2u& dimensions)
     }
 }
 
-ParticlePtr ParticleGrid::get(const sf::Vector2i& position) const {
+std::shared_ptr<Particle> ParticleGrid::get(const sf::Vector2i& position) const {
     assert(inBounds(position));
     
     if (grid[getIndex(position)]->position != position) {
@@ -28,7 +28,7 @@ ParticlePtr ParticleGrid::get(const sf::Vector2i& position) const {
     return grid[getIndex(position)];
 }
 
-void ParticleGrid::set(sf::Vector2i position, ParticlePtr particle) {
+void ParticleGrid::set(sf::Vector2i position, std::shared_ptr<Particle> particle) {
     assert(inBounds(position));
     grid[getIndex(position)] = particle;
     particle->position = position;

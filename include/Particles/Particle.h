@@ -21,11 +21,13 @@ public:
 
     virtual void step();
 
-    virtual ~Particle() = default;
+    // NAIVE TESTING FOR MEMORY LEAK
+    inline static int numCreated = 0;
+    inline static int numDeleted = 0;
+
+    inline virtual ~Particle() { numDeleted++; }
 protected:
     friend class Behaviour;
     ParticleGrid& grid;
     
 };
-
-using ParticlePtr = std::shared_ptr<Particle>;

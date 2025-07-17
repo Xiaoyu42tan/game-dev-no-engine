@@ -51,7 +51,7 @@ void Brush::paint(Element element, World& world) {
             ISSUE: allocating heap one by one for each individual shared_ptr is slow. unfortunately cpp doesnt have a bulk make_shared.
 
             TODO: make custom bulk make_shared. the idea is that you specify you want N new instances of something. then this class returns that in a vector.
-                  the API might looks something like `std::vector<ParticlePtr> sandParticles = bulk_make_shared<Sand>(20)`
+                  the API might looks something like `std::vector<std::shared_ptr<Particle>> sandParticles = bulk_make_shared<Sand>(20)`
 
             basically this is faster because heap allocating B bytes N times is much slower than heap allocating B * N bytes just 1 time.
             it would probably be clean to make our own shared_ptr at this point too.

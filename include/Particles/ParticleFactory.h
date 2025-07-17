@@ -6,5 +6,5 @@
 // forward decl
 class ParticleGrid;
 
-ParticlePtr factoryMakeParticle(Element element, ParticleGrid& grid);
+std::shared_ptr<Particle> factoryMakeParticle(Element element, ParticleGrid& grid);
 
