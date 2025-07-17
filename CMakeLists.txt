@@ -31,19 +31,27 @@ include_directories(include)
 
 ############## ADD SOURCE FILES HERE ##############
 add_executable(main 
+    # System
     "src/main.cpp"
     "src/Engine.cpp"
     "src/World.cpp"
+    "src/ParticleGrid.cpp"
+    "src/Events/EventDispatcher.cpp"
+    "src/Events/EventListener.cpp"
+    "src/Brush.cpp"
+
+    # Add new Particles here
     "src/Particles/Particle.cpp"
     "src/Particles/ParticleFactory.cpp"
     "src/Particles/DebugSolid.cpp"
     "src/Particles/Empty.cpp"
     "src/Particles/Sand.cpp"
     "src/Particles/SandSource.cpp"
-    "src/ParticleGrid.cpp"
-    "src/Events/EventDispatcher.cpp"
-    "src/Events/EventListener.cpp"
-    "src/Brush.cpp"
+
+    # Add new Particle Behaviours here
+    "src/Particles/Behaviours/Behaviour.cpp"
+    "src/Particles/Behaviours/HasGravity.cpp"
+    "src/Particles/Behaviours/SpawnsSand.cpp"
 )
 
 # Link to SFML

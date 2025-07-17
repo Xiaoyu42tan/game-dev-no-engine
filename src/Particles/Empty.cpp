@@ -3,8 +3,8 @@
 #include "Particles/Element.h"
 #include "ParticleGrid.h"
 
-Empty::Empty()
-    : Particle(Element::EMPTY, getElementColor(Element::EMPTY))
+Empty::Empty(ParticleGrid& grid)
+    : Particle(Element::EMPTY, getElementColor(Element::EMPTY), grid)
 {}
 
-void Empty::step(const sf::Vector2i& position, ParticleGrid& grid) { /*do nothing*/ }
+void Empty::step() { /*do nothing*/ }

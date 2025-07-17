@@ -2,9 +2,10 @@
 
 #include "ParticleGrid.h"
 
-Particle::Particle(Element element, sf::Color color) 
+Particle::Particle(Element element, sf::Color color, ParticleGrid& grid) 
     : element(element)
     , color(color)
+    , grid(grid)
 {}
 
-void Particle::step(const sf::Vector2i& position, ParticleGrid& grid) { /* do nothing */ }
+void Particle::step() { /* do nothing */ }

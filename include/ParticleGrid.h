@@ -16,10 +16,12 @@ public:
     ParticlePtr get(const sf::Vector2i& position) const;
     
     // sets particle at {x, y}
-    void set(const sf::Vector2i& position, ParticlePtr particle);
+    // make sure position is a copy to prevent passing self reference
+    void set(sf::Vector2i position, ParticlePtr particle);
     
     // swaps particle at {x1, y1} with particle at {x2, y2}
-    void swap(const sf::Vector2i& position1, const sf::Vector2i& position2);
+    // make sure position is a copy to prevent passing self reference
+    void swap(sf::Vector2i position1, sf::Vector2i position2);
     
     inline bool inBounds(const sf::Vector2i& position) const { return position.x >= 0 && position.x < dimensions.x && position.y >= 0 && position.y < dimensions.y; }
 private:

@@ -1,0 +1,9 @@
+#include "Particles/Behaviours/Behaviour.h"
+
+#include "Particles/Particle.h"
+#include "ParticleGrid.h"
+
+Behaviour::Behaviour(Particle& particle)
+    : particle(particle)
+    , grid(particle.grid)
+{}

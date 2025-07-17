@@ -56,7 +56,7 @@ void Brush::paint(Element element, World& world) {
             basically this is faster because heap allocating B bytes N times is much slower than heap allocating B * N bytes just 1 time.
             it would probably be clean to make our own shared_ptr at this point too.
             */
-            world.spawn(position + offset, factoryMakeParticle(element));
+            world.spawn(position + offset, factoryMakeParticle(element, world.particleGrid));
         }
     }
 }

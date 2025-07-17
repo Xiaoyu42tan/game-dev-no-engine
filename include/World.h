@@ -24,6 +24,9 @@ public:
 
     // for rendering
     sf::Sprite gridSprite;
+    
+    // grid holding particle data
+    ParticleGrid particleGrid;
 
     // spawn a particle at a position
     void spawn(const sf::Vector2i& position, ParticlePtr particle);
@@ -47,9 +50,6 @@ private:
     // play around here
     void testFunction();
     void testCreateBorder();
-
-    // grid holding particle data
-    ParticleGrid particleGrid;
 
     // paint brush
     Brush brush;

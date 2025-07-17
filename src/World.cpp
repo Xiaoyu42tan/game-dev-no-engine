@@ -6,19 +6,19 @@
 #include "Particles/ParticleFactory.h"
 
 void World::testFunction() {
-    particleGrid.set({dimensions.x / 2, dimensions.y / 2}, factoryMakeParticle(Element::SAND_SOURCE));
+    particleGrid.set({dimensions.x / 2, dimensions.y / 2}, factoryMakeParticle(Element::SAND_SOURCE, particleGrid));
 
     testCreateBorder();
 }
 
 void World::testCreateBorder() {
     for (int x = 0; x < dimensions.x; x++) {
-        particleGrid.set({x, 0}, factoryMakeParticle(Element::DEBUG_SOLID));
-        particleGrid.set({x, dimensions.y - 1}, factoryMakeParticle(Element::DEBUG_SOLID));
+        particleGrid.set({x, 0}, factoryMakeParticle(Element::DEBUG_SOLID, particleGrid));
+        particleGrid.set({x, dimensions.y - 1}, factoryMakeParticle(Element::DEBUG_SOLID, particleGrid));
     }
     for (int y = 0; y < dimensions.y; y++) {
-        particleGrid.set({0, y}, factoryMakeParticle(Element::DEBUG_SOLID));
-        particleGrid.set({dimensions.x - 1, y}, factoryMakeParticle(Element::DEBUG_SOLID));
+        particleGrid.set({0, y}, factoryMakeParticle(Element::DEBUG_SOLID, particleGrid));
+        particleGrid.set({dimensions.x - 1, y}, factoryMakeParticle(Element::DEBUG_SOLID, particleGrid));
     }
 }
 
@@ -73,10 +73,10 @@ void World::spawn(const sf::Vector2i& position, ParticlePtr particle) {
 
 void World::step() {
     sf::Vector2i position = {0, dimensions.y - 1};
-    
+
     for (position.y = dimensions.y - 1; position.y >= 0; position.y--) {
         for (position.x = 0; position.x < dimensions.x; position.x++) {
-            particleGrid.get(position)->step(position, particleGrid);
+            particleGrid.get(position)->step();
         }
     }
 

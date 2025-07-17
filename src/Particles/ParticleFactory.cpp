@@ -4,26 +4,27 @@
 #include "Particles/Empty.h"
 #include "Particles/Sand.h"
 #include "Particles/SandSource.h"
+#include "ParticleGrid.h"
 
 #include <memory>
 #include <stdexcept>
 
-ParticlePtr factoryMakeParticle(Element element) {
+ParticlePtr factoryMakeParticle(Element element, ParticleGrid& grid) {
     switch (element) {
         case Element::DEBUG_SOLID:
-        return std::make_shared<DebugSolid>();
+        return std::make_shared<DebugSolid>(grid);
         break;
         
         case Element::EMPTY:
-        return std::make_shared<Empty>();
+        return std::make_shared<Empty>(grid);
         break;
 
         case Element::SAND:
-        return std::make_shared<Sand>();
+        return std::make_shared<Sand>(grid);
         break;
 
         case Element::SAND_SOURCE:
-        return std::make_shared<SandSource>();
+        return std::make_shared<SandSource>(grid);
         break;
     }
 

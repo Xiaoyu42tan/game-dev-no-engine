@@ -5,14 +5,11 @@
 #include "Particles/Sand.h"
 #include "ParticleGrid.h"
 
-SandSource::SandSource()
-    : Particle(Element::SAND_SOURCE, getElementColor(Element::SAND_SOURCE))
+SandSource::SandSource(ParticleGrid& grid)
+    : Particle(Element::SAND_SOURCE, getElementColor(Element::SAND_SOURCE), grid)
+    , spawner(*this)
 {}
 
-void SandSource::step(const sf::Vector2i& position, ParticleGrid& grid) {
-    // spawn sand below if possible
-    sf::Vector2i down = {position.x, position.y + 1};
-    if (grid.inBounds(down) && grid.get(down)->element == Element::EMPTY) {
-        grid.set(down, factoryMakeParticle(Element::SAND));
-    }
+void SandSource::step() {
+    spawner.step();
 }

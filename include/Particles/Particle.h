@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Particles/Element.h"
+#include "Particles/Behaviours/Behaviour.h"
 
 #include <memory>
 
@@ -14,12 +15,17 @@ class Particle {
 public:
     const Element element;
     sf::Color color;
+    sf::Vector2i position = {-1, -1};
 
-    Particle(Element element, sf::Color color);
+    Particle(Element element, sf::Color color, ParticleGrid& grid);
 
-    virtual void step(const sf::Vector2i& position, ParticleGrid& grid);
+    virtual void step();
 
     virtual ~Particle() = default;
+protected:
+    friend class Behaviour;
+    ParticleGrid& grid;
+    
 };
 
 using ParticlePtr = std::shared_ptr<Particle>;

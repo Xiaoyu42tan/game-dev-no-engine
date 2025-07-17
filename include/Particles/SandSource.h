@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Particles/Particle.h" // needed because we are inheriting from Particle
+#include "Particles/Behaviours/SpawnsSand.h" // needed because its a member var
 
-#include <SFML/Graphics/Color.hpp> // needed because color is defined inline
 #include <SFML/System/Vector2.hpp>
 
 // forward decls
@@ -10,8 +10,10 @@ class ParticleGrid;
 
 class SandSource : public Particle {
 public:
-    SandSource();
-    void step(const sf::Vector2i& position, ParticleGrid& grid) override;
+    SandSource(ParticleGrid& grid);
+    void step() override;
     ~SandSource() override = default;
+private:
+    SpawnsSand spawner;
 };
 

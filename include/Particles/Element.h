@@ -19,7 +19,7 @@ inline sf::Color getElementColor(Element element) {
         case Element::EMPTY:        return sf::Color::Transparent;
         case Element::SAND:         return sf::Color(194, 178, 128); // a sand-like tan
         case Element::DEBUG_SOLID:  return sf::Color::Magenta;
-        case Element::SAND_SOURCE:  return sf::Color::White;   // orange
+        case Element::SAND_SOURCE:  return sf::Color::White;
     }
 
     throw std::runtime_error("ERROR getElementColor() : element color not defined!");
