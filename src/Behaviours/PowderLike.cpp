@@ -1,19 +1,22 @@
-#include "Particles/Behaviours/HasGravity.h"
+#include "Behaviours/PowderLike.h"
 
+#include "Behaviours/LiquidLike.h"
 #include "Particles/Element.h"
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 #include "Util/StochasticRound.h"
 
-HasGravity::HasGravity(Particle& particle, float acceleration, float maxVelocity)
+#include <cstdlib>
+
+PowderLike::PowderLike(Particle& particle, float acceleration, float maxSpeed)
     : Behaviour(particle)
     , acceleration(acceleration)
-    , maxVelocity(maxVelocity)
+    , maxSpeed(std::abs(maxSpeed))
 {}
 
-void HasGravity::step() {
+void PowderLike::step() {
     velocity += acceleration;
-    if (abs(velocity) > abs(maxVelocity)) velocity = maxVelocity;
+    if (abs(velocity) > maxSpeed) velocity = maxSpeed;
 
     int numSteps = std::abs(stochasticRound(velocity));
     for (int i = 0; i < numSteps; i++) {
@@ -21,7 +24,7 @@ void HasGravity::step() {
     }
 }
 
-void HasGravity::stepHelper() {
+void PowderLike::stepHelper() {
     if (velocity == 0.f) return;
 
     int direction = 1;
@@ -31,13 +34,29 @@ void HasGravity::stepHelper() {
     sf::Vector2i verticalLeft = {particle.position.x - 1, particle.position.y + direction};
     sf::Vector2i verticalRight = {particle.position.x + 1, particle.position.y + direction};
         
-    if (grid.inBounds(vertical) && grid.get(vertical)->element == Element::EMPTY) {
+    if (canSwapWith(vertical)) {
         grid.swap(particle.position, vertical);
-    } else if (grid.inBounds(verticalLeft) && grid.get(verticalLeft)->element == Element::EMPTY) {
+    } else if (canSwapWith(verticalLeft)) {
         grid.swap(particle.position, verticalLeft);
-    } else if (grid.inBounds(verticalRight) && grid.get(verticalRight)->element == Element::EMPTY) {
+    } else if (canSwapWith(verticalRight)) {
         grid.swap(particle.position, verticalRight);
     } else {
         velocity = 0.f;
     }
 }
+
+bool PowderLike::canSwapWith(const sf::Vector2i& position) const {
+    if (!grid.inBounds(position)) return false;
+
+    auto otherParticle = grid.get(position);
+    if (otherParticle->element == Element::EMPTY) return true;
+
+    if (otherParticle->behaviourSet.has<LiquidLike>()) {
+        // 33% chance to swap with liquid
+        return rand() % 3 == 0;
+    }
+
+    return false;
+
+}
+

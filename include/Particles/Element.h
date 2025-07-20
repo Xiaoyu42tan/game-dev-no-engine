@@ -8,7 +8,7 @@ enum class Element {
     SAND,
     DEBUG_SOLID,
     SAND_SOURCE,
-
+    WATER,
 
     // make sure this is at bottom so we can cast to int to see number of elements
     NUM_ELEMENTS 
@@ -20,6 +20,7 @@ inline sf::Color getElementColor(Element element) {
         case Element::SAND:         return sf::Color(194, 178, 128); // a sand-like tan
         case Element::DEBUG_SOLID:  return sf::Color::Magenta;
         case Element::SAND_SOURCE:  return sf::Color::White;
+        case Element::WATER:        return sf::Color::Blue;
     }
 
     throw std::runtime_error("ERROR getElementColor() : element color not defined!");

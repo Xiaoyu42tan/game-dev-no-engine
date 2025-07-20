@@ -1,7 +1,7 @@
 #include "Particles/Empty.h"
 
 #include "Particles/Element.h"
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 Empty::Empty(ParticleGrid& grid)
     : Particle(Element::EMPTY, getElementColor(Element::EMPTY), grid)

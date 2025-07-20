@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Particles/Behaviours/Behaviour.h"
+#include "Behaviours/Behaviour.h"
 
 class ParticleGrid;
 

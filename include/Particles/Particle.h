@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Particles/Element.h"
-#include "Particles/Behaviours/Behaviour.h"
+#include "Behaviours/Behaviour.h"
+#include "Behaviours/BehaviourSet.h"
 
 #include <memory>
+#include <vector>
 
 #include <SFML/Graphics/Color.hpp> // lightweight header
 #include <SFML/System/Vector2.hpp> // lightweight header
@@ -16,10 +18,11 @@ public:
     const Element element;
     sf::Color color;
     sf::Vector2i position = {-1, -1};
+    BehaviourSet behaviourSet;
 
     Particle(Element element, sf::Color color, ParticleGrid& grid);
 
-    virtual void step();
+    virtual void step() = 0;
 
     // NAIVE TESTING FOR MEMORY LEAK
     inline static int numCreated = 0;
@@ -29,5 +32,6 @@ public:
 protected:
     friend class Behaviour;
     ParticleGrid& grid;
+    
     
 };

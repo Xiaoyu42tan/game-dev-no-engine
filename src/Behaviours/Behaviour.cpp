@@ -1,7 +1,7 @@
-#include "Particles/Behaviours/Behaviour.h"
+#include "Behaviours/Behaviour.h"
 
 #include "Particles/Particle.h"
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 Behaviour::Behaviour(Particle& particle)
     : particle(particle)

@@ -1,11 +1,12 @@
 #include "Particles/Particle.h"
 
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
-Particle::Particle(Element element, sf::Color color, ParticleGrid& grid) 
+Particle::Particle(Element element, sf::Color color, ParticleGrid& grid)
     : element(element)
     , color(color)
     , grid(grid)
+    , behaviourSet(*this)
 {
     numCreated++;
 }

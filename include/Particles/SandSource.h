@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Particles/Particle.h" // needed because we are inheriting from Particle
-#include "Particles/Behaviours/SpawnsSand.h" // needed because its a member var
+#include "Behaviours/SpawnsSand.h" // needed because its a member var
+
+#include <memory>
 
 #include <SFML/System/Vector2.hpp>
 
@@ -14,6 +16,5 @@ public:
     void step() override;
     ~SandSource() override = default;
 private:
-    SpawnsSand spawner;
 };
 

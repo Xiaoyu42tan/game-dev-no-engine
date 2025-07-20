@@ -1,4 +1,4 @@
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 #include "Particles/Empty.h"
 #include "Particles/ParticleFactory.h"

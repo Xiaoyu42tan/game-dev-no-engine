@@ -1,7 +1,7 @@
 #include "Particles/DebugSolid.h"
 
 #include "Particles/Element.h"
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 DebugSolid::DebugSolid(ParticleGrid& grid)
     : Particle(Element::DEBUG_SOLID, getElementColor(Element::DEBUG_SOLID), grid)

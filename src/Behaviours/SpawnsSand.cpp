@@ -1,7 +1,7 @@
-#include "Particles/Behaviours/SpawnsSand.h"
+#include "Behaviours/SpawnsSand.h"
 
 #include "Particles/ParticleFactory.h"
-#include "ParticleGrid.h"
+#include "Particles/ParticleGrid.h"
 
 SpawnsSand::SpawnsSand(Particle& particle)
     : Behaviour(particle)

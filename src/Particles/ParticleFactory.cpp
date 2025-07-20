@@ -4,7 +4,8 @@
 #include "Particles/Empty.h"
 #include "Particles/Sand.h"
 #include "Particles/SandSource.h"
-#include "ParticleGrid.h"
+#include "Particles/Water.h"
+#include "Particles/ParticleGrid.h"
 
 #include <memory>
 #include <stdexcept>
@@ -25,6 +26,10 @@ std::shared_ptr<Particle> factoryMakeParticle(Element element, ParticleGrid& gri
 
         case Element::SAND_SOURCE:
         return std::make_shared<SandSource>(grid);
+        break;
+
+        case Element::WATER:
+        return std::make_shared<Water>(grid);
         break;
     }
 

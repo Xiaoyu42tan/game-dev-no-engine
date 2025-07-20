@@ -7,27 +7,32 @@ set(CMAKE_CXX_STANDARD 17)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 # find sfml
-find_library(SFML_LIB
-	sfml-graphics
-	sfml-window 
-	sfml-system
-	sfml-audio
-)
+set(SFML_LOCAL_LIB_DIR "${CMAKE_BINARY_DIR}/_deps/sfml-build/lib")
 
-# download sfml if not found
-if (NOT SFML_LIB)
+find_library(SFML_GRAPHICS_LIB sfml-graphics PATHS ${SFML_LOCAL_LIB_DIR} NO_DEFAULT_PATH)
+find_library(SFML_WINDOW_LIB   sfml-window   PATHS ${SFML_LOCAL_LIB_DIR} NO_DEFAULT_PATH)
+find_library(SFML_SYSTEM_LIB   sfml-system   PATHS ${SFML_LOCAL_LIB_DIR} NO_DEFAULT_PATH)
+find_library(SFML_AUDIO_LIB    sfml-audio    PATHS ${SFML_LOCAL_LIB_DIR} NO_DEFAULT_PATH)
+
+if (NOT SFML_GRAPHICS_LIB OR NOT SFML_WINDOW_LIB OR NOT SFML_SYSTEM_LIB OR NOT SFML_AUDIO_LIB)
+    message(STATUS "SFML NOT Found! Fetching from GitHub...")
     include(FetchContent)
     FetchContent_Declare(SFML
         GIT_REPOSITORY https://github.com/SFML/SFML.git
-        GIT_TAG 3.0.x # 3.0.x is a branch name 
-        GIT_SHALLOW ON # shallow clone, only downloads the latest commit instead of the full git history
-        EXCLUDE_FROM_ALL # exclude things like SFML_BUILD_EXAMPLES, SFML_BUILD_DOC, SFML_BUILD_TEST_SUITE etc which we dont need
-        SYSTEM) # suppress compiler warnings, assume external lib is well tested and correct
+        GIT_TAG 3.0.x
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM
+    )
     FetchContent_MakeAvailable(SFML)
+else()
+    message(STATUS "SFML Found!")
 endif()
 
+
 # add include directories here. the compiler will search these directories for the headers
-include_directories(include)
+include_directories("include")
+include_directories("${CMAKE_BINARY_DIR}/_deps/sfml-src/include")
 
 ############## ADD SOURCE FILES HERE ##############
 add_executable(main 
@@ -35,31 +40,34 @@ add_executable(main
     "src/main.cpp"
     "src/Engine.cpp"
     "src/World.cpp"
-    "src/ParticleGrid.cpp"
     "src/Events/EventDispatcher.cpp"
     "src/Events/EventListener.cpp"
     "src/Brush.cpp"
 
     # Add new Particles here
-    "src/Particles/Particle.cpp"
+    "src/Particles/ParticleGrid.cpp"
     "src/Particles/ParticleFactory.cpp"
+    "src/Particles/Particle.cpp"
     "src/Particles/DebugSolid.cpp"
     "src/Particles/Empty.cpp"
     "src/Particles/Sand.cpp"
     "src/Particles/SandSource.cpp"
+    "src/Particles/Water.cpp"
 
     # Add new Particle Behaviours here
-    "src/Particles/Behaviours/Behaviour.cpp"
-    "src/Particles/Behaviours/HasGravity.cpp"
-    "src/Particles/Behaviours/SpawnsSand.cpp"
+    "src/Behaviours/Behaviour.cpp"
+    "src/Behaviours/PowderLike.cpp"
+    "src/Behaviours/LiquidLike.cpp"
+    "src/Behaviours/SpawnsSand.cpp"
+    "src/Behaviours/BehaviourSet.cpp"
 )
 
 # Link to SFML
 target_link_libraries(main PRIVATE
-    sfml-graphics
-    sfml-window
-    sfml-system
-    sfml-audio
+    ${SFML_GRAPHICS_LIB}
+    ${SFML_WINDOW_LIB}
+    ${SFML_SYSTEM_LIB}
+    ${SFML_AUDIO_LIB}
 )
 
 ############## Post build launcher script ##############

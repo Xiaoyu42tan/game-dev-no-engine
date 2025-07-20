@@ -8,6 +8,7 @@ class Particle;
 class Behaviour {
 public:
     Behaviour(Particle& particle);
+    virtual ~Behaviour() = default;
 
     virtual void step() = 0;
 

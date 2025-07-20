@@ -14,7 +14,7 @@
 #include <ctime>
 #include <cstdlib>
 
-constexpr int WORLDSIZE = 101;
+constexpr int WORLDSIZE = 100;
 
 constexpr sf::Vector2f DEFAULT_VIEW_CENTRE = {50.f, 50.f};
 constexpr sf::Vector2f DEFAULT_VIEW_SIZE = {1920.f / 8.f, 1080.f / 8.f};

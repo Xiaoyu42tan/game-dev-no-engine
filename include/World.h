@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ParticleGrid.h" // needed because ParticleGrid is a member var
+#include "Particles/ParticleGrid.h" // needed because ParticleGrid is a member var
 #include "Brush.h" // needed because Brush is a member var
 
 #include <vector>
