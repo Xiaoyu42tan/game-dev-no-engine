@@ -7,6 +7,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <algorithm>
+#include <random>
 
 void World::testFunction() {
     particleGrid.set({dimensions.x / 2, dimensions.y / 2}, factoryMakeParticle(Element::SAND_SOURCE, particleGrid));
@@ -55,7 +57,7 @@ void World::render() {
     // update brush overlay
     sf::Vector2i brushPosition = static_cast<sf::Vector2i>(getMouseWorldPosition());
     for (const sf::Vector2i& offset : brush.getBrushMask()) {
-        if (inBounds(brushPosition + offset)) {
+        if (particleGrid.inBounds(brushPosition + offset)) {
             gridImage.setPixel(static_cast<sf::Vector2u>(brushPosition + offset), getElementColor(brush.getSelectedElement()));
         }
     }
@@ -64,14 +66,6 @@ void World::render() {
     gridTexture.update(gridImage);
 
     // grid sprite automatically gets updated when the texture gets updated
-}
-
-void World::spawn(const sf::Vector2i& position, std::shared_ptr<Particle> particle) {
-    particleGrid.set(position, particle);
-    gridImage.setPixel(static_cast<sf::Vector2u>(position), particle->color);
-
-    // update grid texture
-    gridTexture.update(gridImage);
 }
 
 void World::step() {
@@ -83,10 +77,11 @@ void World::step() {
     }
 
     // process in random order
-    while (!toBeProcessed.empty()) {
-        int randIndex = std::rand() % toBeProcessed.size();
-        std::swap(toBeProcessed[randIndex], toBeProcessed.back());
-        
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(toBeProcessed.begin(), toBeProcessed.end(), gen);
+
+    while (!toBeProcessed.empty()) {        
         if (auto particle = toBeProcessed.back().lock()) {
             particle->step();
         }

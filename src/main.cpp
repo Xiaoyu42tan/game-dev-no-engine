@@ -11,5 +11,6 @@ int main() {
 
     // Naive way to check for memory leak
     std::cout << "Particles created: " << Particle::numCreated << ", Particles deleted: " << Particle::numDeleted << "\n";
+    assert(Particle::numCreated == Particle::numDeleted);
 }
 

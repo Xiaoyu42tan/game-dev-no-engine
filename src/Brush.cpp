@@ -46,7 +46,7 @@ void Brush::paint(Element element, World& world) {
     sf::Vector2i position = static_cast<sf::Vector2i>(world.getMouseWorldPosition());
 
     for (const sf::Vector2i& offset : brushMask) {
-        if (world.inBounds(position + offset)) {
+        if (world.particleGrid.inBounds(position + offset)) {
             /*
             ISSUE: allocating heap one by one for each individual shared_ptr is slow. unfortunately cpp doesnt have a bulk make_shared.
 
@@ -56,7 +56,7 @@ void Brush::paint(Element element, World& world) {
             basically this is faster because heap allocating B bytes N times is much slower than heap allocating B * N bytes just 1 time.
             it would probably be clean to make our own shared_ptr at this point too.
             */
-            world.spawn(position + offset, factoryMakeParticle(element, world.particleGrid));
+            world.particleGrid.set(position + offset, factoryMakeParticle(element, world.particleGrid));
         }
     }
 }

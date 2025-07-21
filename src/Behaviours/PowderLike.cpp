@@ -4,7 +4,7 @@
 #include "Particles/Element.h"
 #include "Particles/ParticleGrid.h"
 
-#include "Util/StochasticRound.h"
+#include "Util/Random.h"
 
 #include <cstdlib>
 

@@ -3,7 +3,8 @@
 #include "Particles/Element.h"
 #include "Particles/ParticleGrid.h"
 
-#include "Util/StochasticRound.h"
+#include "Util/Random.h"
+
 
 LiquidLike::LiquidLike(Particle& particle, float acceleration, float viscosity, float density)
     : Behaviour(particle)
@@ -41,7 +42,7 @@ void LiquidLike::stepHelper() {
     } else if (canSwapWith(verticalRight)) {
         grid.swap(particle.position, verticalRight);
     } else if (canSwapWith(left) || canSwapWith(right)) {
-        if (rand() % 2 == 0) {
+        if (coinFlip()) {
             // right goes first
             if (canSwapWith(right)) {
                 grid.swap(particle.position, right);
@@ -71,14 +72,13 @@ bool LiquidLike::canSwapWith(const sf::Vector2i& position) const {
     if (otherParticle->element == particle.element) return false;
 
     if (otherParticle->behaviourSet.has<LiquidLike>()) {
-        // chance to swap is based on how much denser we are than the other particle
         float otherDensity = otherParticle->behaviourSet.get<LiquidLike>()->density;
         if (density < otherDensity) return false;
 
         float diff = density - otherDensity;
-        float chance = diff / (density + otherDensity);  // normalized between 0 and 1
+        float chance = diff / (density + otherDensity); // normalized between 0 and 1
 
-        return static_cast<float>(std::rand()) / RAND_MAX < chance;
+        return randomChance(chance);
     }
 
     return false;

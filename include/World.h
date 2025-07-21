@@ -27,11 +27,6 @@ public:
     // grid holding particle data
     ParticleGrid particleGrid;
 
-    // spawn a particle at a position
-    void spawn(const sf::Vector2i& position, std::shared_ptr<Particle> particle);
-
-    inline bool inBounds(const sf::Vector2i& position) const { return position.x >= 0 && position.x < dimensions.x && position.y >= 0 && position.y < dimensions.y; };
-
     inline sf::Vector2f getMouseWorldPosition() const { return convertWindowToWorldPosition(sf::Mouse::getPosition(window)); }
 
     inline sf::Vector2f convertWindowToWorldPosition(const sf::Vector2i& windowPosition) const { return window.mapPixelToCoords(windowPosition); }
