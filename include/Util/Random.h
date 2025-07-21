@@ -7,10 +7,18 @@ inline bool coinFlip() {
     return dist(rng) == 0;
 }
 
+// input must be in range [0, 1]
 inline bool randomChance(float probability) {
     static thread_local std::mt19937 rng(std::random_device{}());
     static thread_local std::uniform_real_distribution<float> dist(0.0f, 1.0f);
     return dist(rng) < probability;
+}
+
+// Returns a random integer in the range [start, end]
+inline int randomInt(int start, int end) {
+    static thread_local std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<int> dist(start, end);
+    return dist(rng);
 }
 
 /*

@@ -6,16 +6,16 @@
 #include "Util/Random.h"
 
 
-LiquidLike::LiquidLike(Particle& particle, float acceleration, float viscosity, float density)
+LiquidLike::LiquidLike(Particle& particle, float acceleration, float maxVelocity, float density)
     : Behaviour(particle)
     , acceleration(acceleration)
-    , viscosity(std::abs(viscosity))
+    , maxVelocity(maxVelocity)
     , density(density)
 {}
 
 void LiquidLike::step() {
     velocity += acceleration;
-    if (abs(velocity) > viscosity) velocity = viscosity;
+    if (abs(velocity) > abs(maxVelocity)) velocity = maxVelocity;
 
     int numSteps = std::abs(stochasticRound(velocity));
     for (int i = 0; i < numSteps; i++) {

@@ -4,7 +4,7 @@
 #include "Particles/ParticleGrid.h"
 
 DebugSolid::DebugSolid(ParticleGrid& grid)
-    : Particle(Element::DEBUG_SOLID, getElementColor(Element::DEBUG_SOLID), grid)
+    : Particle(Element::DEBUG_SOLID, DebugSolid::DEFAULT_COLOR, grid)
 {}
 
 void DebugSolid::step() { /*do nothing*/ }

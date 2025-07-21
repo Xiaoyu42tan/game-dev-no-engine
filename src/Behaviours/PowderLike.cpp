@@ -8,15 +8,15 @@
 
 #include <cstdlib>
 
-PowderLike::PowderLike(Particle& particle, float acceleration, float maxSpeed)
+PowderLike::PowderLike(Particle& particle, float acceleration, float maxVelocity)
     : Behaviour(particle)
     , acceleration(acceleration)
-    , maxSpeed(std::abs(maxSpeed))
+    , maxVelocity(maxVelocity)
 {}
 
 void PowderLike::step() {
     velocity += acceleration;
-    if (abs(velocity) > maxSpeed) velocity = maxSpeed;
+    if (abs(velocity) > abs(maxVelocity)) velocity = maxVelocity;
 
     int numSteps = std::abs(stochasticRound(velocity));
     for (int i = 0; i < numSteps; i++) {

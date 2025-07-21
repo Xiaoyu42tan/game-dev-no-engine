@@ -6,11 +6,11 @@
 #include "Particles/ParticleGrid.h"
 
 SandSource::SandSource(ParticleGrid& grid)
-    : Particle(Element::SAND_SOURCE, getElementColor(Element::SAND_SOURCE), grid)
+    : Particle(Element::SAND_SOURCE, SandSource::DEFAULT_COLOR, grid)
 {
-    behaviourSet.add<SpawnsSand>(std::make_shared<SpawnsSand>(*this));
+    behaviourSet.add<Spawner>(std::make_shared<Spawner>(*this, Element::SAND, SPAWN_OFFSET));
 }
 
 void SandSource::step() {
-    behaviourSet.get<SpawnsSand>()->step();
+    behaviourSet.get<Spawner>()->step();
 }

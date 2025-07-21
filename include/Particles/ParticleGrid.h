@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <memory>
+#include <queue>
 
 #include <SFML/Graphics/Color.hpp> // lightweight header
 #include <SFML/System/Vector2.hpp> // lightweight header
@@ -18,7 +19,12 @@ public:
     // sets particle at {x, y}
     // make sure position is a copy to prevent passing self reference
     void set(sf::Vector2i position, std::shared_ptr<Particle> particle);
-    
+
+    // replaces `target` with `particle` on the beginning of the NEXT simulation step
+    void delayedSet(sf::Vector2i position, std::shared_ptr<Particle> particle);
+
+    void processDelayedSet();
+
     // swaps particle at {x1, y1} with particle at {x2, y2}
     // make sure position is a copy to prevent passing self reference
     void swap(sf::Vector2i position1, sf::Vector2i position2);
@@ -31,4 +37,7 @@ private:
     // using flat vectors for contiguous memory
     std::vector<std::shared_ptr<Particle>> grid;
     sf::Vector2u dimensions;
+
+    // pair: {target to replace | what we're replacing target with}
+    std::queue<std::pair<std::weak_ptr<Particle>, std::shared_ptr<Particle>>> delayedSetQueue;
 };

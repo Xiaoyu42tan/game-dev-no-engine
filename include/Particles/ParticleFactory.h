@@ -8,3 +8,4 @@ class ParticleGrid;
 
 std::shared_ptr<Particle> factoryMakeParticle(Element element, ParticleGrid& grid);
 
+sf::Color factoryGetColor(Element element);

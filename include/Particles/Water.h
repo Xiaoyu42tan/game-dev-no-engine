@@ -12,11 +12,13 @@
 class ParticleGrid;
 
 constexpr float WATER_ACCELERATION = 2.0f;
-constexpr float WATER_VISCOSITY = 3.5f;
+constexpr float WATER_MAX_VELOCITY = 3.5f;
 constexpr float WATER_DENSITY = 1.f;
 
 class Water : public Particle {
 public:
+    static constexpr sf::Color DEFAULT_COLOR = sf::Color::Blue;
+
     Water(ParticleGrid& grid);
     void step() override;
     ~Water() override = default;

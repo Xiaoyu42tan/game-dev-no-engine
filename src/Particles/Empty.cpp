@@ -4,7 +4,7 @@
 #include "Particles/ParticleGrid.h"
 
 Empty::Empty(ParticleGrid& grid)
-    : Particle(Element::EMPTY, getElementColor(Element::EMPTY), grid)
+    : Particle(Element::EMPTY, Empty::DEFAULT_COLOR, grid)
 {}
 
 void Empty::step() { /*do nothing*/ }

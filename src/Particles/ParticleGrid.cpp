@@ -28,6 +28,23 @@ std::shared_ptr<Particle> ParticleGrid::get(const sf::Vector2i& position) const 
     return grid[getIndex(position)];
 }
 
+void ParticleGrid::delayedSet(sf::Vector2i position, std::shared_ptr<Particle> particle) {
+    assert(inBounds(position));
+
+    auto target = std::weak_ptr<Particle>(get(position));
+    delayedSetQueue.push({target, particle});
+}
+
+void ParticleGrid::processDelayedSet() {
+    while (!delayedSetQueue.empty()) {
+        auto [target, particle] = delayedSetQueue.front(); delayedSetQueue.pop();
+
+        if (std::shared_ptr<Particle> exists = target.lock()) {
+            set(exists->position, particle);
+        }
+    }
+}
+
 void ParticleGrid::set(sf::Vector2i position, std::shared_ptr<Particle> particle) {
     assert(inBounds(position));
     grid[getIndex(position)] = particle;

@@ -4,12 +4,11 @@
 
 #include <SFML/System/Vector2.hpp>
 
-class ParticleGrid;
-
+class Particle;
 
 class PowderLike : public Behaviour {
 public:
-    PowderLike(Particle& particle, float acceleration, float maxSpeed);
+    PowderLike(Particle& particle, float acceleration, float maxVelocity);
 
     void step() override;
 private:
@@ -19,12 +18,11 @@ private:
 
     // velocity in terms of units per simulation step
     float velocity = 0.f;
+    const float maxVelocity;
     
     // acceleration due to gravity. can be negative (floats instead of sinks). in terms of units per simulation step squared
     const float acceleration;
     
-    // speed should be non negative
-    float maxSpeed;
 };
 
 

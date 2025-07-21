@@ -9,6 +9,7 @@ class ParticleGrid;
 
 class DebugSolid : public Particle {
 public:
+    static constexpr sf::Color DEFAULT_COLOR = sf::Color::Magenta;
     DebugSolid(ParticleGrid& grid);
     void step() override;
     ~DebugSolid() override = default;

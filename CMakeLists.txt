@@ -53,13 +53,19 @@ add_executable(main
     "src/Particles/Sand.cpp"
     "src/Particles/SandSource.cpp"
     "src/Particles/Water.cpp"
+    "src/Particles/Smoke.cpp"
+    "src/Particles/Fire.cpp"
+    "src/Particles/Wood.cpp"
+    "src/Particles/Ash.cpp"
 
     # Add new Particle Behaviours here
     "src/Behaviours/Behaviour.cpp"
+    "src/Behaviours/BehaviourSet.cpp"
     "src/Behaviours/PowderLike.cpp"
     "src/Behaviours/LiquidLike.cpp"
-    "src/Behaviours/SpawnsSand.cpp"
-    "src/Behaviours/BehaviourSet.cpp"
+    "src/Behaviours/Spawner.cpp"
+    "src/Behaviours/Temporary.cpp"
+    "src/Behaviours/Flammable.cpp"
 )
 
 # Link to SFML

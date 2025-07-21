@@ -5,6 +5,8 @@
 #include "Particles/Element.h"
 #include "Particles/ParticleFactory.h"
 
+#include "Behaviours/Temporary.h"
+
 #include <cstdlib>
 #include <iostream>
 #include <algorithm>
@@ -58,7 +60,7 @@ void World::render() {
     sf::Vector2i brushPosition = static_cast<sf::Vector2i>(getMouseWorldPosition());
     for (const sf::Vector2i& offset : brush.getBrushMask()) {
         if (particleGrid.inBounds(brushPosition + offset)) {
-            gridImage.setPixel(static_cast<sf::Vector2u>(brushPosition + offset), getElementColor(brush.getSelectedElement()));
+            gridImage.setPixel(static_cast<sf::Vector2u>(brushPosition + offset), factoryGetColor(brush.getSelectedElement()));
         }
     }
 
@@ -69,6 +71,9 @@ void World::render() {
 }
 
 void World::step() {
+    // process all delayed
+    particleGrid.processDelayedSet();
+
     // prepare all particles to be processed
     for (sf::Vector2i position = {0, 0}; position.y < dimensions.y; position.y++) {
         for (position.x = 0; position.x < dimensions.x; position.x++) {

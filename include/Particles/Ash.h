@@ -12,15 +12,15 @@
 class ParticleGrid;
 
 
-constexpr float SAND_ACCELERATION = 0.3f;
-constexpr float SAND_MAX_VELOCITY = 3.f;
+constexpr float ASH_ACCELERATION = 0.1f;
+constexpr float ASH_MAX_VELOCITY = 0.2f;
 
-class Sand : public Particle {
+class Ash : public Particle {
 public:
-    static constexpr sf::Color DEFAULT_COLOR = sf::Color(194, 178, 128); // a sand-like tan
-    Sand(ParticleGrid& grid);
+    static constexpr sf::Color DEFAULT_COLOR = sf::Color(150, 150, 150); // light gray
+    Ash(ParticleGrid& grid);
     void step() override;
-    ~Sand() override = default;
+    ~Ash() override = default;
 private:
 };
 
