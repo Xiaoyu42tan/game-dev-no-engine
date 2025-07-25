@@ -1,3 +1,22 @@
+# PARTICLE SIMULATOR
+This is a cellular automata particle simulator. Similar to [The Powder Toy](https://powdertoy.co.uk/) and the Falling Everything engine used by [Noita](https://store.steampowered.com/app/881100/Noita/).
+
+[Here](https://youtu.be/9GD_9Q7hKBQ) is a demonstration on Youtube.
+
+<img width="774" height="739" alt="image" src="https://github.com/user-attachments/assets/e076fe42-4278-4a0d-a569-e66e3db524ae" />
+
+<img width="935" height="746" alt="image" src="https://github.com/user-attachments/assets/d79b50a9-fd7c-4252-80be-e07218d14cf9" />
+
+<img width="852" height="790" alt="image" src="https://github.com/user-attachments/assets/7884d541-4787-4f11-bf00-0c7321e7ce78" />
+
+Currently the controls are:
+- Next element: E
+- Prev element: Q
+- Zoom in/out: Scroll Wheel
+- Place/delete: Left/Right click
+- Pause: Space
+- Change brush size: < and >
+
 # HOW TO BUILD
 
 ### 1. Configuring for the first time
